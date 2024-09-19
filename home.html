@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendation System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('./static/movie2.jpg'); /* Replace with your background image */
+            background-size: cover;
+            background-attachment: fixed;
+            color: #fff;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7); /* Transparent background for the main container */
+            border-radius: 10px;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3rem;
+            color: #FFD700; /* Gold color for glitter effect */
+            text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700, 0 0 20px #FFD700, 0 0 25px #FFD700, 0 0 30px #FFD700, 0 0 35px #FFD700;
+            animation: glitter 1.5s infinite; /* Glitter animation */
+        }
+        @keyframes glitter {
+            0% { text-shadow: 0 0 5px #FFD700, 0 0 10px #FFD700, 0 0 15px #FFD700; }
+            50% { text-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700, 0 0 30px #FFD700; }
+            100% { text-shadow: 0 0 15px #FFD700, 0 0 25px #FFD700, 0 0 35px #FFD700; }
+        }
+        .btn-success {
+            background-color: #f39c12; /* Custom color for buttons */
+            border-color: #e67e22;
+        }
+        .btn-success:hover {
+            background-color: #e67e22;
+            border-color: #d35400;
+        }
+        .btn-info {
+            background-color: #17a2b8; /* Custom color for trailer button */
+            border-color: #138496;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+        .dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+  
+
+    <div class="container mt-5">
+        <h1 class="text-center">🎬 Movie Recommendation System 🍿</h1>
+        <p class="text-center">Select a movie from the list below to get recommendations!</p>
+
+        <form action="/recommend" method="POST" class="text-center">
+            <div class="form-group">
+                <label for="movie">Choose a Movie:</label>
+                <select name="movie" id="movie" class="form-control mt-3">
+                    {% for movie in movies %}
+                        <option value="{{ movie }}">{{ movie }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="btn btn-success mt-4">Recommend Movies</button>
+        </form>
+        
+        <!-- Container for displaying recommended movies and trailers -->
+        {% if recommended_movies %}
+            <div class="mt-5">
+                <h3 class="text-center">Recommended Movies</h3>
+                <div class="row mt-4">
+                    {% for movie in recommended_movies %}
+                        <div class="col-md-4 mb-3">
+                            <div class="card">
+                                {% if movie.poster_path %}
+                                    <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }} Poster">
+                                {% else %}
+                                    <img src="{{ url_for('static', filename='default-poster.jpg') }}" class="card-img-top" alt="Default Poster">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ movie.title }}</h5>
+                                    <p class="card-text">You might enjoy this movie as it's similar to "{{ selected_movie }}".</p>
+                                    <a href="https://www.youtube.com/results?search_query={{ movie.title }}+trailer" target="_blank" class="btn btn-info">Watch Trailer</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="text-center mt-5">
+            <a href="/me" class="btn btn-success">About Me 👤</a>
+            <a href="/bolly" class="btn btn-success">Bollywood Quiz 🎥</a>
+            <a href="/holly" class="btn btn-success">Hollywood Quiz 🎬</a>
+            <a href="/cartoon" class="btn btn-success">Fun Quiz 😂</a>
+            <a href="/social_sharing" class="btn btn-success">Sharing 🌟</a>
+           
+            <a href="/index" class="btn btn-success">Movie_Chatbot🎥</a>
+            
+        </div>
+    </div>
+</body>
+</html>

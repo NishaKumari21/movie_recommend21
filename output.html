@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Recommendations</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('your-background-image.jpg'); /* Replace with your background image */
+            background-size: cover;
+            background-attachment: fixed;
+            color: #fff;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.7); /* Transparent background for the main container */
+            border-radius: 10px;
+            padding: 20px;
+        }
+        .card {
+            border: 2px solid #FFD700; /* Gold border for the cards */
+            border-radius: 10px;
+            overflow: hidden; /* Ensure that the image doesn't overflow the card */
+        }
+        .card-img-top {
+            height: 500px; /* Set a larger height for the images */
+            object-fit: cover; /* Ensure the image covers the area without distortion */
+        }
+        .btn-success {
+            background-color: #f39c12; /* Custom color for buttons */
+            border-color: #e67e22;
+        }
+        .btn-success:hover {
+            background-color: #e67e22;
+            border-color: #d35400;
+        }
+        .btn-info {
+            background-color: #17a2b8; /* Custom color for trailer button */
+            border-color: #138496;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+        }
+        footer {
+            background: rgba(0, 0, 0, 0.7); /* Transparent background for footer */
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Movies Similar to "{{ selected_movie }}" 🎥</h1>
+        
+        <div class="row mt-4">
+            {% for movie in movies_and_posters %}
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        {% if movie.poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w500{{ movie.poster_path }}" class="card-img-top" alt="{{ movie.title }} Poster">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='default-poster.jpg') }}" class="card-img-top" alt="Default Poster">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ movie.title }}</h5>
+                            <p class="card-text">You might enjoy this movie as it's similar to "{{ selected_movie }}".</p>
+                            <!-- Trailer button -->
+                            <button class="btn btn-info" onclick="showTrailer('{{ movie.title }}')">Watch Trailer</button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="text-center mt-5">
+            <a href="/" class="btn btn-success">🏠 Go Back to Home</a>
+            <a href="/contact" class="btn btn-success">📞 Contact Us</a>
+            <a href="/thank" class="btn btn-success">🙏 Thank You</a>
+        </div>
+    </div>
+
+    <footer class="text-center mt-5">
+        <p>&copy; 2024 Movie Recommendation System</p>
+       
+    </footer>
+
+    <script>
+        function showTrailer(movieTitle) {
+            var trailerSearch = prompt("Enter the movie name to search for its trailer:", movieTitle);
+            if (trailerSearch) {
+                var trailerUrl = "https://www.youtube.com/results?search_query=" + encodeURIComponent(trailerSearch) + "+trailer";
+                window.open(trailerUrl, '_blank');
+            }
+        }
+    </script>
+</body>
+</html>
